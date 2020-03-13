@@ -13,7 +13,8 @@ var options = {
 http.request(options, function(response){
     console.log(response.headers);
 
-    console.log(qs.stringify(request.headers));
+    console.log(qs.stringify(response.headers));
+
     }).end();//end request method
 
 

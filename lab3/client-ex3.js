@@ -11,10 +11,24 @@ var options = {
 };
 
 http.request(options, function(response){
-    console.log(response.headers);
+    // console.log(response.headers);
 
-    console.log(qs.stringify(response.headers));
+    var string = qs.stringify(response.headers);
+    var stringisyObject = qs.parse(string);
+    var contentType = stringisyObject["content-type"];
+    var date = stringisyObject["date"];
+
+    console.log("Content-Type = " + contentType);
+    console.log("Date = " + date);
+
+
+    // console.log(qs.stringify(response.headers));
+    // qs.parse("", null,null,
+    //     { decodeURIComponent: response });
+
 
     }).end();//end request method
 
 
+
+    

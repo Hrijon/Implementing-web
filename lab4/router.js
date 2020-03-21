@@ -1,6 +1,12 @@
-// create route function with pathname as parameter
-function route(pathname) {
-    console.log("Routing a request for " + pathname);
+function route(pathname, handle) {
+    // note access via associative array notation
+    // if the path points to a function i.e. request handler
+    if (typeof handle[pathname] === 'function') {
+    handle[pathname](); // call the appropriate function
+    } 
+    
+    else {
+    console.log("No handler found for: " + pathname);
     }
-    // export route function
+    }
     exports.route = route;

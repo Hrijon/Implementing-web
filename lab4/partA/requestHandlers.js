@@ -22,28 +22,10 @@ function reqStart(response, postData){
 
 }
 
-function reqUpload(response, postData){
+function reqUpload(response, postData) {
     console.log("Request handler 'upload' was called.");
-   
-    function req(request, response) //req:function, resp:obj as para
-    {
-          //        use url module to get pathname of requested resource 
-          request.setEncoding('utf8');
-          // declare variable to accumulate incoming data
-          var postData = "";
-          request.addListener('data', function(dataChunk){
-                //accumulate data here
-                postData += dataChunk;
-                // only display for testing purposes
-                console.log("Recived POST chunk '" + dataChunk + "'.");
-                response.writeHead(200, {"Content-type":"text/plain"});
-                response.write("response from requpload");
-                response.end
-          });
-    }
-
     response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("successfully uploaded: " + postData);
+    response.write("You've sent: " + postData);
     response.end();
 }
 

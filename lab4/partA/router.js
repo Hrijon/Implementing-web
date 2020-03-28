@@ -1,9 +1,16 @@
-function route(pathname, handle, response, postData) {
-                
-    // note access via associative array notation
-    // if the path points to a function i.e. request handler
+/**
+ * Route function check the types of pathname and response based on that.
+ * 
+ * @param {Function} pathname 
+ * @param {object} handle 
+ * @param {object} request 
+ * @param {object} response 
+ * @param {object} postData 
+ */
+function route(pathname, handle, request, response, postData){
+    //check if the pathname is function or not.
     if (typeof handle[pathname] === 'function') {
-        handle[pathname](response,postData); // call the appropriate function && pass response argument
+        handle[pathname](request, response, postData); // call the appropriate function && pass response argument
     } 
     else {
         console.log("No handler found for: " + pathname);
@@ -11,5 +18,6 @@ function route(pathname, handle, response, postData) {
         response.write("Resource not found!");
         response.end();
     }
-    }
-    exports.route = route;
+}
+//allow access to other files
+exports.route = route;

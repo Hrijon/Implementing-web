@@ -1,23 +1,40 @@
 var http = require("http"); // import http core modules
 var url = require("url"); // import url core modules
 
-function startServer(route, handle) //route: function, handle:object in para
+/**
+ * starts the server 
+ * 
+ * @param {Function} route 
+ * @param {object} handle 
+ */
+function startServer(route, handle, postData)
 {
-      function onRequest(request, response) //req:function, resp:obj as para
+      /**
+       * use url module to get pathname of requested resource 
+       * send status report to server
+       * set encodign to utf8
+       * accumulating incoming data using action listener
+       * 
+       * @param {obj} request 
+       * @param {obj} response 
+       * @param {obj} postData 
+       */
+      function onRequest(request, response, postData) 
       {
-            //        use url module to get pathname of requested resource 
             var pathname = url.parse(request.url).pathname;
 
             console.log("Request for " + pathname + " received.");
             request.setEncoding('utf8');
+            
             // declare variable to accumulate incoming data
             var postData = "";
+            
             request.addListener('data', function(dataChunk){
-                  //accumulate data here
                   postData += dataChunk;
                   // only display for testing purposes
                   console.log("Recived POST chunk '" + dataChunk + "'.");
             });
+
             request.addListener('end', function(){
                   route(pathname, handle, response, postData);
             });
@@ -26,5 +43,6 @@ function startServer(route, handle) //route: function, handle:object in para
             console.log("Server has started.");
 }
 
+//allow access to other files
 exports.startServer = startServer;
 

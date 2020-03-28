@@ -7,7 +7,7 @@ var url = require("url"); // import url core modules
  * @param {Function} route 
  * @param {object} handle 
  */
-function startServer(route, handle, postData)
+function startServer(route, handle, request, postData)
 {
       /**
        * use url module to get pathname of requested resource 
@@ -24,20 +24,9 @@ function startServer(route, handle, postData)
             var pathname = url.parse(request.url).pathname;
 
             console.log("Request for " + pathname + " received.");
-            request.setEncoding('utf8');
             
-            // declare variable to accumulate incoming data
-            var postData = "";
-            
-            request.addListener('data', function(dataChunk){
-                  postData += dataChunk;
-                  // only display for testing purposes
-                  console.log("Recived POST chunk '" + dataChunk + "'.");
-            });
+            route(pathname, handle, request, response, postData);
 
-            request.addListener('end', function(){
-                  route(pathname, handle, response, postData);
-            });
       }
       http.createServer(onRequest).listen(40310,'localhost');
             console.log("Server has started.");

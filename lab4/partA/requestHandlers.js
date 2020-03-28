@@ -38,13 +38,13 @@ function reqStart(request, response, postData){
 function reqUpload(request, response, postData) {
 
     // declare variable to accumulate incoming data
-    // var postData = "";
-    // request.addListener('data', function(dataChunk){
-    //       //accumulate data here
-    //       postData += dataChunk;
-    //       // only display for testing purposes
-    //       console.log("Recived POST chunk '" + dataChunk + "'.");
-    // });
+    var postData = "";
+    request.addListener('data', function(dataChunk){
+          //accumulate data here
+          postData += dataChunk;
+          // only display for testing purposes
+          console.log("Recived POST chunk '" + dataChunk + "'.");
+    });
     
     console.log("Request handler 'upload' was called.");
     response.writeHead(200, {"Content-Type": "text/plain"});

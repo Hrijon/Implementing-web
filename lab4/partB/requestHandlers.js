@@ -16,9 +16,9 @@ function reqStart(request, response, postData){
         'charset=UTF-8" />'+
         '</head>'+
         '<body>'+
-        '<form action="/upload" method="post">'+
-        '<textarea name="text" rows="20" cols="60"></textarea>'+
-        '<input type="submit" value="Submit text" />'+
+        '<form action="/upload" enctype="multipart/form-data">'+
+        '<input type="text" name="upload" multiple="multiple" />'+
+        '<input type="submit" value="Upload file" />'+
         '</form>'+
         '</body>'+
         '</html>';

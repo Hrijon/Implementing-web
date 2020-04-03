@@ -13,7 +13,7 @@ handle["/upload"] = requestHandlers.reqUpload;
 handle["/show"] = requestHandlers.reqShow;
 
 
-//***JASON format***
+//***JSON format***
 // handle = {
 //     "/" : requestHandlers.reqStart,
 //     "/start" : requestHandlers.reqStart,

@@ -1,4 +1,9 @@
-// var exec = require("child_process").exec;
+var exec = require("child_process").exec;
+var querystring = require("querystring");
+var http = require('http');
+var formidable = require('formidable');
+var fs = require('fs');
+var sys = require('sys');
 
 /**
  * reqStart sends status report to server and display html form on client 
@@ -16,48 +21,68 @@ function reqStart(request, response, postData){
         'charset=UTF-8" />'+
         '</head>'+
         '<body>'+
-        '<form action="/upload" enctype="multipart/form-data">'+
-        '<input type="text" name="upload" multiple="multiple" />'+
+        '<form action="/upload" enctype="multipart/form-data" method="post">'+
+
+        '<input type="file" name="upload" multiple="multiple" />'+
         '<input type="submit" value="Upload file" />'+
         '</form>'+
         '</body>'+
         '</html>';
 
-    response.writeHead( 200, {"Content-Type": "text/plain"} );
+    response.writeHead( 200, {"Content-Type": "text/html"} );
     response.write(body);
     response.end();
 }
 
+// function afterParse(params) {
+    
+// }
+
 /**
  * reqUpload sends a status report as a response to the client and server
+ * formidable is use to parse form data (file uploads)
  * 
  * @param {object} request 
  * @param {object} response 
  * @param {object} postData 
  */
-function reqUpload(request, response, postData) {
-
-    // declare variable to accumulate incoming data
-    var postData = "";
-    // request.addListener('data', function(dataChunk){
-    //       //accumulate data here
-    //       postData += dataChunk;
-    //       // only display for testing purposes
-    //       console.log("Recived POST chunk '" + dataChunk + "'.");
-    // });
-    
+function reqUpload(request, response) {
     console.log("Request handler 'upload' was called.");
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("You've sent: " + postData);
-    response.end();
+    console.log("... about to parse ...");
+   
+    var form = new formidable.IncomingForm();
+   
+    form.uploadDir = './tmp'; // must include this line    
+    
+
+    form.parse(request, function(err, field, file) {
+        console.log("parsing done");
+        console.log('fields:', field);
+        console.log('files:', file);
+
+        // tried to rename to an already existing file
+        fs.rename(file.upload.path, "./test.png",function(err){
+            if (err)
+            {
+                fs.unlink("./test.png");
+                fs.rename(file.upload.path,"./test.png");
+            }
+        });
+            response.writeHead(200, {"Content-Type": "text/html"});
+            response.write("Received image:<br/>");
+            response.write("<img src='/show' />");
+            response.end();
+    });
 }
 
 /**
- * shows the uploaded data
+ * Stream the image data on behalf of reqUpload
+ * 
+ * @param {object} request
  * @param {object} response 
  * @param {object} postData 
  */
-function reqShow(response, postData) 
+function reqShow(request, response, postData) 
 {
     console.log("Request handler 'show' was called.");
     response.writeHead(200, {"Content-Type": "image/png"});
